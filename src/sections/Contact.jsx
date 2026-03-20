@@ -14,13 +14,6 @@ const Contact = () => {
     triggerOnce: true
   })
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const mailtoLink = `mailto:reshmamurgan2025@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`
-    window.location.href = mailtoLink
-    setFormData({ name: '', email: '', subject: '', message: '' })
-  }
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -50,7 +43,7 @@ const Contact = () => {
               </div>
               <div className="info-text">
                 <h3 className="info-title">Email</h3>
-                <p className="info-detail">reshmamurgan@gmail.com</p>
+                <p className="info-detail">reshmamurugan2025@gmail.com</p>
               </div>
             </div>
 
@@ -89,7 +82,24 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <form onSubmit={handleSubmit} className={`contact-form ${inView ? 'animate-fadeIn' : ''}`} style={{ animationDelay: '600ms' }}>
+          <form
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            className={`contact-form ${inView ? 'animate-fadeIn' : ''}`}
+            style={{ animationDelay: '600ms' }}
+          >
+            {/* Netlify Forms requires this hidden field to map to the form name */}
+            <input type="hidden" name="form-name" value="contact" />
+            {/* Honeypot to reduce spam submissions */}
+            <div style={{ display: 'none' }}>
+              <label>
+                Don’t fill this out if you’re human:
+                <input name="bot-field" />
+              </label>
+            </div>
+
             <div className="form-group">
               <label htmlFor="name" className="form-label">
                 Name
