@@ -9,10 +9,59 @@ const Contact = () => {
     message: ''
   })
 
+  const [submitState, setSubmitState] = useState({
+    status: 'idle', // idle | submitting | success | error
+    message: ''
+  })
+
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true
   })
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    setSubmitState({ status: 'submitting', message: '' })
+
+    const hiddenForm = document.getElementById('netlify-contact-form')
+    if (!hiddenForm) {
+      setSubmitState({
+        status: 'error',
+        message: 'Contact form is not ready. Please try again.'
+      })
+      return
+    }
+
+    // Populate the static Netlify form in index.html.
+    hiddenForm.elements.name.value = formData.name
+    hiddenForm.elements.email.value = formData.email
+    hiddenForm.elements.subject.value = formData.subject
+    hiddenForm.elements.message.value = formData.message
+
+    const body = new URLSearchParams(new FormData(hiddenForm)).toString()
+
+    try {
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body
+      })
+
+      if (!res.ok) throw new Error('Request failed')
+
+      setSubmitState({
+        status: 'success',
+        message: 'Thanks! Your message has been sent.'
+      })
+      setFormData({ name: '', email: '', subject: '', message: '' })
+    } catch (err) {
+      setSubmitState({
+        status: 'error',
+        message: 'Failed to send message. Please try again.'
+      })
+    }
+  }
 
   const handleChange = (e) => {
     setFormData({
@@ -83,23 +132,10 @@ const Contact = () => {
 
           {/* Contact Form */}
           <form
-            name="contact"
-            method="POST"
-            data-netlify="true"
-            netlify-honeypot="bot-field"
+            onSubmit={handleSubmit}
             className={`contact-form ${inView ? 'animate-fadeIn' : ''}`}
             style={{ animationDelay: '600ms' }}
           >
-            {/* Netlify Forms requires this hidden field to map to the form name */}
-            <input type="hidden" name="form-name" value="contact" />
-            {/* Honeypot to reduce spam submissions */}
-            <div style={{ display: 'none' }}>
-              <label>
-                Don’t fill this out if you’re human:
-                <input name="bot-field" />
-              </label>
-            </div>
-
             <div className="form-group">
               <label htmlFor="name" className="form-label">
                 Name
@@ -163,6 +199,17 @@ const Contact = () => {
             <button type="submit" className="button button-primary">
               Send Message
             </button>
+
+            {submitState.status === 'success' ? (
+              <p className="contact-status contact-status-success">
+                {submitState.message}
+              </p>
+            ) : null}
+            {submitState.status === 'error' ? (
+              <p className="contact-status contact-status-error">
+                {submitState.message}
+              </p>
+            ) : null}
           </form>
         </div>
       </div>

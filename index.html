@@ -11,6 +11,26 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Hidden Netlify Form (static HTML so Netlify can detect it at build time) -->
+    <form
+      id="netlify-contact-form"
+      name="contact"
+      method="POST"
+      data-netlify="true"
+      style="display: none;"
+    >
+      <input type="hidden" name="form-name" value="contact" />
+      <input type="text" name="name" id="netlify-contact-name" />
+      <input type="email" name="email" id="netlify-contact-email" />
+      <input type="text" name="subject" id="netlify-contact-subject" />
+      <textarea name="message" id="netlify-contact-message"></textarea>
+      <div style="display: none;">
+        <label>
+          Don’t fill this out if you’re human:
+          <input type="text" name="bot-field" id="netlify-contact-bot-field" />
+        </label>
+      </div>
+    </form>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
