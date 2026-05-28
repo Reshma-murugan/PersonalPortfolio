@@ -24,24 +24,20 @@ const Contact = () => {
 
     setSubmitState({ status: 'submitting', message: '' })
 
-    // Helper function to encode form data for Netlify
-    const encode = (data) => {
-      return Object.keys(data)
-        .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-        .join("&")
-    }
+    const form = e.target
+    const body = new URLSearchParams(new FormData(form)).toString()
 
     try {
       const res = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({
-          'form-name': 'contact',
-          ...formData
-        })
+        body
       })
 
-      if (!res.ok) throw new Error('Request failed')
+      if (!res.ok) {
+        const errorText = await res.text().catch(() => '')
+        throw new Error(`HTTP ${res.status}: ${errorText || 'Submission failed'}`)
+      }
 
       setSubmitState({
         status: 'success',
@@ -49,9 +45,10 @@ const Contact = () => {
       })
       setFormData({ name: '', email: '', subject: '', message: '' })
     } catch (err) {
+      console.error('Netlify Form Submit Error:', err)
       setSubmitState({
         status: 'error',
-        message: 'Failed to send message. Please try again.'
+        message: `Failed to send message: ${err.message || 'Please try again.'}`
       })
     }
   }
@@ -129,10 +126,16 @@ const Contact = () => {
 
           {/* Contact Form */}
           <form
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
             className={`contact-form ${inView ? 'animate-fadeIn' : ''}`}
             style={{ animationDelay: '600ms' }}
           >
+            <input type="hidden" name="form-name" value="contact" />
+            <input type="hidden" name="bot-field" />
             <div className="form-group">
               <label htmlFor="name" className="form-label">
                 Name
