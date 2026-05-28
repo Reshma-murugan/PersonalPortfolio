@@ -93,7 +93,7 @@ const About = () => {
           name: 'Django',
           icon: (
             <img
-              src="https://img.icons8.com/?size=100&id=qVdf4FqnA4HG&format=png"
+              src="https://img.icons8.com/color/48/django.png"
               alt="Django"
               width="24"
               height="24"

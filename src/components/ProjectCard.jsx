@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
 
 const ProjectCard = ({ title, description, image, video, technologies, githubLink, liveLink }) => {
@@ -6,19 +7,42 @@ const ProjectCard = ({ title, description, image, video, technologies, githubLin
     triggerOnce: true
   })
 
+  const [videoContainerRef, videoInView] = useInView({
+    threshold: 0.1,
+    triggerOnce: false
+  })
+
+  const videoRef = useRef(null)
+
+  useEffect(() => {
+    if (!video) return
+    const el = videoRef.current
+    if (el) {
+      if (videoInView) {
+        el.play().catch((err) => {
+          console.log("Autoplay was prevented or interrupted:", err)
+        })
+      } else {
+        el.pause()
+      }
+    }
+  }, [videoInView, video])
+
   return (    <div 
       ref={ref}
       className={`project-card ${inView ? 'animate-fadeIn' : ''}`}
     >
-      <div className="project-image-container">
+      <div className="project-image-container" ref={videoContainerRef}>
         {video ? (
           <video 
+            ref={videoRef}
             src={video}
             className="project-image"
-            autoPlay 
             loop 
             muted 
+            defaultMuted
             playsInline
+            onLoadedMetadata={(e) => { e.target.muted = true; }}
           />
         ) : (
           <img 
