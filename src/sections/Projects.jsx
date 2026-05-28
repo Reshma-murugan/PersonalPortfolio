@@ -9,7 +9,7 @@ const Projects = () => {
     rootMargin: '50px 0px'
   })
 
-
+  const projectCount = projects.length
 
   return (
     <section id="projects" className="projects">
@@ -24,7 +24,7 @@ const Projects = () => {
 
         <div
           ref={ref}
-          className={`grid-responsive ${inView ? 'animate-fadeIn' : ''}`}
+          className={`projects-flex-container count-${projectCount} ${inView ? 'animate-fadeIn' : ''}`}
         >
           {projects.map((project, index) => (
             <div

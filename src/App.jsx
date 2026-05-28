@@ -7,16 +7,30 @@ import Contact from './sections/Contact'
 import Footer from './components/Footer'
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false)
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem('theme-dark');
+    if (savedMode !== null) {
+      return JSON.parse(savedMode);
+    }
+    // Note: in older Safari this might fail if window is undefined, but Vite standard dev is fine.
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  })
 
+  // Save changes to local storage
   useEffect(() => {
-    // Check user's preferred color scheme and update on change
+    localStorage.setItem('theme-dark', JSON.stringify(darkMode))
+  }, [darkMode])
+
+  // Optional: listen to system theme changes if no explicit preference is saved
+  useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    const handleChange = (e) => setDarkMode(e.matches)
+    const handleChange = (e) => {
+      if (localStorage.getItem('theme-dark') === null) {
+        setDarkMode(e.matches)
+      }
+    }
 
-    setDarkMode(mediaQuery.matches)
     mediaQuery.addEventListener('change', handleChange)
-
     return () => mediaQuery.removeEventListener('change', handleChange)
   }, [])
 

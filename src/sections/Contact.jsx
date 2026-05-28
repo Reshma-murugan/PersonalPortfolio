@@ -24,28 +24,21 @@ const Contact = () => {
 
     setSubmitState({ status: 'submitting', message: '' })
 
-    const hiddenForm = document.getElementById('netlify-contact-form')
-    if (!hiddenForm) {
-      setSubmitState({
-        status: 'error',
-        message: 'Contact form is not ready. Please try again.'
-      })
-      return
+    // Helper function to encode form data for Netlify
+    const encode = (data) => {
+      return Object.keys(data)
+        .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+        .join("&")
     }
-
-    // Populate the static Netlify form in index.html.
-    hiddenForm.elements.name.value = formData.name
-    hiddenForm.elements.email.value = formData.email
-    hiddenForm.elements.subject.value = formData.subject
-    hiddenForm.elements.message.value = formData.message
-
-    const body = new URLSearchParams(new FormData(hiddenForm)).toString()
 
     try {
       const res = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body
+        body: encode({
+          'form-name': 'contact',
+          ...formData
+        })
       })
 
       if (!res.ok) throw new Error('Request failed')
@@ -92,7 +85,11 @@ const Contact = () => {
               </div>
               <div className="info-text">
                 <h3 className="info-title">Email</h3>
-                <p className="info-detail">reshmamurugan2025@gmail.com</p>
+                <p className="info-detail">
+                  <a href="mailto:reshmamurugan2025@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>
+                    reshmamurugan2025@gmail.com
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -112,14 +109,14 @@ const Contact = () => {
             <div className="social-profiles">
               <h3 className="social-title">Professional Profiles</h3>
               <div className="social-links">
-                <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer"
+                <a href="https://github.com/Reshma-murugan" target="_blank" rel="noopener noreferrer"
                   className="social-link">
                   <span className="visually-hidden">GitHub</span>
                   <svg className="social-icon" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
                   </svg>
                 </a>
-                <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer"
+                <a href="https://www.linkedin.com/in/reshma-murugan" target="_blank" rel="noopener noreferrer"
                   className="social-link">
                   <span className="visually-hidden">LinkedIn</span>
                   <svg className="social-icon" fill="currentColor" viewBox="0 0 24 24">
@@ -196,8 +193,15 @@ const Contact = () => {
               ></textarea>
             </div>
 
-            <button type="submit" className="button button-primary">
-              Send Message
+            <button 
+              type="submit" 
+              className="button button-primary"
+              disabled={submitState.status === 'submitting'}
+            >
+              {submitState.status === 'submitting' ? 'Sending...' : 'Send Message'}
+              <svg className="button-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
             </button>
 
             {submitState.status === 'success' ? (

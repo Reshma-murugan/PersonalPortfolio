@@ -34,14 +34,16 @@ const Hero = () => {
 
       <div ref={ref} className={`hero-content ${mounted ? 'fade-in' : ''}`}>
         <h1 className="hero-title">
-          <span className="hero-title-main">
+          <span className="hero-title-main" aria-label="Hi, I'm Reshma">
             {"Hi, I'm Reshma".split("").map((char, index) => (
-              <span key={index} className="reveal-char" style={{ '--index': index }}>
+              <span key={index} className="reveal-char" aria-hidden="true" style={{ '--index': index }}>
                 {char === " " ? "\u00A0" : char}
               </span>
             ))}
           </span>
-          <span className="hero-title-dynamic animate-fadeIn" style={{ animationDelay: '300ms' }}>{titles[titleIndex]}</span>
+          <span key={titleIndex} className="hero-title-dynamic animate-fadeIn" style={{ animationDelay: '300ms' }}>
+            {titles[titleIndex]}
+          </span>
         </h1>
 
         <p className="hero-description animate-fadeIn" style={{ animationDelay: '600ms' }}>

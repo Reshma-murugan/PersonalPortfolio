@@ -7,20 +7,31 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home')
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = menuItems.map(item => item.href.substring(1))
-      const scrollPosition = window.scrollY + 100
+    let timeoutId = null;
 
-      for (const section of sections) {
-        const element = document.getElementById(section)
-        if (element && element.offsetTop <= scrollPosition && (element.offsetTop + element.offsetHeight) > scrollPosition) {
-          setActiveSection(section)
-        }
+    const handleScroll = () => {
+      if (timeoutId) {
+        window.cancelAnimationFrame(timeoutId);
       }
+
+      timeoutId = window.requestAnimationFrame(() => {
+        const sections = menuItems.map(item => item.href.substring(1))
+        const scrollPosition = window.scrollY + 100
+
+        for (const section of sections) {
+          const element = document.getElementById(section)
+          if (element && element.offsetTop <= scrollPosition && (element.offsetTop + element.offsetHeight) > scrollPosition) {
+            setActiveSection(section)
+          }
+        }
+      });
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (timeoutId) window.cancelAnimationFrame(timeoutId)
+    }
   }, [])
 
   // Close mobile menu when clicking outside

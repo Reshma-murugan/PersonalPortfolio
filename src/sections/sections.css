@@ -940,3 +940,75 @@
 .dark .form-textarea:focus {
   background: var(--color-background-light);
 }
+
+/* Contact Status Messages */
+.contact-status {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-align: center;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.contact-status-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--color-success);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.contact-status-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--color-error);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Custom Paper Plane Flying Hover Effect for Contact Button */
+.contact .button-primary:hover .button-icon {
+  transform: translate(4px, -4px);
+}
+
+/* Projects Section & Dynamic Flex Layout */
+.projects {
+  background-color: var(--color-background);
+  position: relative;
+  padding: var(--space-20) 0;
+}
+
+.projects-flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-8);
+  width: 100%;
+}
+
+.projects-flex-container .project-item {
+  flex: 0 0 100%;
+  max-width: 100%;
+  display: flex;
+}
+
+/* Tablet (min-width: 768px): 2 columns by default */
+@media (min-width: 768px) {
+  .projects-flex-container .project-item {
+    flex: 0 0 calc(50% - var(--space-4));
+    max-width: calc(50% - var(--space-4));
+  }
+}
+
+/* Desktop (min-width: 1024px) */
+@media (min-width: 1024px) {
+  /* Default: 3-column layout (for 3, 5, 6, etc.) */
+  .projects-flex-container .project-item {
+    flex: 0 0 calc(33.333% - 1.333rem);
+    max-width: calc(33.333% - 1.333rem);
+  }
+
+  /* Specific Override: 4-project layout (2x2 grid) */
+  .projects-flex-container.count-4 .project-item {
+    flex: 0 0 calc(50% - var(--space-4));
+    max-width: calc(50% - var(--space-4));
+  }
+}
