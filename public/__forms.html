@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Netlify Forms Blueprint</title>
+</head>
+<body>
+  <!-- Netlify Form Blueprint for Build-Time Detection -->
+  <form 
+    name="contact" 
+    method="POST" 
+    data-netlify="true" 
+    data-netlify-honeypot="bot-field"
+  >
+    <input type="hidden" name="form-name" value="contact" />
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="text" name="subject" />
+    <textarea name="message"></textarea>
+    <input type="text" name="bot-field" />
+  </form>
+</body>
+</html>

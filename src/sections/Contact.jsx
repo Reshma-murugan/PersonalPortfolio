@@ -28,7 +28,7 @@ const Contact = () => {
     const body = new URLSearchParams(new FormData(form)).toString()
 
     try {
-      const res = await fetch('/', {
+      const res = await fetch('/__forms.html', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body
