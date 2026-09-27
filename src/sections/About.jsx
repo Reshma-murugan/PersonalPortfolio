@@ -101,6 +101,28 @@ const About = () => {
           )
         },
         {
+          name: 'Java',
+          icon: (
+            <img
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg"
+              alt="Java"
+              width="24"
+              height="24"
+            />
+          )
+        },
+        {
+          name: 'Spring Boot',
+          icon: (
+            <img
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg"
+              alt="Spring Boot"
+              width="24"
+              height="24"
+            />
+          )
+        },
+        {
           name: 'REST APIs',
           icon: (
             <img
@@ -218,7 +240,7 @@ const About = () => {
         <div className={`about-content ${contentInView ? 'fade-in' : ''}`}>
           <div className="about-summary">
             <p className={`about-text ${contentInView ? 'animate-zoomEntrance' : ''}`} style={{ animationDelay: '300ms' }}>
-              As a recent graduate and an enthusiastic full-stack developer, I’m eager to begin my career creating immersive and reliable web applications. I have a strong foundation in front-end technologies such as HTML, CSS, JavaScript, and React, along with back-end skills in Python, Django, and database management.
+              As an Engineering graduate and an enthusiastic full-stack developer, I’m eager to begin my career creating immersive and reliable web applications. I have a strong foundation in front-end technologies such as HTML, CSS, JavaScript, and React, along with back-end skills in Java, Spring&nbsp;Boot, Python, and Django, as well as database management.
             </p>
 
             <div className="about-info-row">

@@ -861,11 +861,11 @@
 }
 
 .social-link:hover {
-  background: var(--color-primary);
-  color: white;
+  background: var(--color-background-light);
+  color: var(--color-text-light);
   transform: translateY(-6px) rotate(8deg);
-  border-color: var(--color-primary);
-  box-shadow: 0 10px 25px rgba(51, 102, 255, 0.4);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-md);
 }
 
 .social-icon {
@@ -924,11 +924,6 @@
 
 .dark .contact-info .info-icon {
   background: rgba(51, 102, 255, 0.1);
-}
-
-.dark .social-link:hover {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
 }
 
 .dark .form-input,
